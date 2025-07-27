@@ -16,4 +16,4 @@ Um aplicativo web simples e eficiente para organizar seus links favoritos em um 
 - Tailwind
 
 ## 🔗 deploy
-[LinkUp]([https://lynk-up-flax.vercel.app/])
+[LinkUp](https://lynk-up-flax.vercel.app/)
