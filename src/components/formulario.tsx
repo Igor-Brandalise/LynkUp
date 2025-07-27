@@ -3,17 +3,28 @@ import type { Favorito } from "../types/favorito";
 
 type Props = {
   aoAdicionar: (favorito: Favorito) => void;
+  favoritos: Favorito[]
 };
 
-export function Formulario({ aoAdicionar }: Props) {
+export function Formulario({ aoAdicionar, favoritos }: Props) {
   const [titulo, setTitulo] = useState("");
   const [url, setUrl] = useState("");
+  const [erro, setErro] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!titulo || !url) {
       return;
     }
+
+    const urlJaExiste = favoritos.some( f => f.url === url)
+
+    if(urlJaExiste){
+      setErro("Essa URL já foi adicionada")
+      return
+    }
+
+    setErro("")
 
     const novoFavorito: Favorito = {
       id: crypto.randomUUID(),
@@ -36,7 +47,7 @@ export function Formulario({ aoAdicionar }: Props) {
         value={titulo}
         onChange={(e) => setTitulo(e.target.value)}
         placeholder="Digite seu título"
-        className="w-[25rem] h-10 border-1 border-gray-300 rounded-[10px] p-2"
+        className="w-[25rem] h-10 border-1 border-gray-500 rounded-[10px] p-2"
       />
 
       <input
@@ -44,8 +55,12 @@ export function Formulario({ aoAdicionar }: Props) {
         value={url}
         onChange={(e) => setUrl(e.target.value)}
         placeholder="Digite sua URL"
-        className="w-[25rem] h-10 border-1 border-gray-300 rounded-[10px] p-2"
+        className="w-[25rem] h-10 border-1 border-gray-500 rounded-[10px] p-2"
       />
+
+{erro && (
+  <p className="text-red-600 font-bold">{erro}</p>
+)}
 
       <button
         type="submit"
@@ -54,6 +69,7 @@ export function Formulario({ aoAdicionar }: Props) {
       >
         Adicionar bookmark
       </button>
+    
     </form>
   );
 }
