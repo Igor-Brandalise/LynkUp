@@ -1,9 +1,18 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import type { Favorito } from "../types/favorito";
 
 type Props = {
   aoAdicionar: (favorito: Favorito) => void;
-  favoritos: Favorito[]
+  favoritos: Favorito[];
+};
+
+const isValidUrl = (url: string) => {
+  try {
+    new URL(url);
+    return true;
+  } catch {
+    return false;
+  }
 };
 
 export function Formulario({ aoAdicionar, favoritos }: Props) {
@@ -11,42 +20,53 @@ export function Formulario({ aoAdicionar, favoritos }: Props) {
   const [url, setUrl] = useState("");
   const [erro, setErro] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!titulo || !url) {
-      return;
-    }
+  const handleSubmit = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
 
-    const urlJaExiste = favoritos.some( f => f.url === url)
+      if (!titulo || !url) {
+        setErro("Por favor, preencha todos os campos");
+        return;
+      }
 
-    if(urlJaExiste){
-      setErro("Essa URL já foi adicionada")
-      return
-    }
+      if (!isValidUrl(url)) {
+        setErro("Por favor, insira uma URL válida");
+        return;
+      }
 
-    setErro("")
+      const urlJaExiste = favoritos.some((f) => f.url === url);
+      if (urlJaExiste) {
+        setErro("Essa URL já foi adicionada");
+        return;
+      }
 
-    const novoFavorito: Favorito = {
-      id: crypto.randomUUID(),
-      titulo,
-      url,
-    };
+      setErro("");
 
-    aoAdicionar(novoFavorito);
+      const novoFavorito: Favorito = {
+        id: crypto.randomUUID(),
+        titulo,
+        url,
+      };
 
-    setTitulo("");
-    setUrl("");
-  };
+      aoAdicionar(novoFavorito);
+
+      setTitulo("");
+      setUrl("");
+    },
+    [titulo, url, favoritos, aoAdicionar]
+  );
+
+  const isFormValid = titulo.trim() !== "" && url.trim() !== "" && isValidUrl(url);
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col items-center gap-5">
-
       <input
         type="text"
         value={titulo}
         onChange={(e) => setTitulo(e.target.value)}
         placeholder="Digite seu título"
-        className="w-[25rem] h-10 border-1 border-gray-500 rounded-[10px] p-2"
+        className="w-[90%] h-10 border border-gray-500 rounded-[10px] p-2"
+        aria-label="Título do bookmark"
       />
 
       <input
@@ -54,21 +74,23 @@ export function Formulario({ aoAdicionar, favoritos }: Props) {
         value={url}
         onChange={(e) => setUrl(e.target.value)}
         placeholder="Digite sua URL"
-        className="w-[25rem] h-10 border-1 border-gray-500 rounded-[10px] p-2"
+        className="w-[90%] h-10 border border-gray-500 rounded-[10px] p-2"
+        aria-label="URL do bookmark"
       />
 
-{erro && (
-  <p className="text-red-600 font-bold" role="alert" aria-live="assertive">{erro}</p>
-)}
+      {erro && (
+        <p className="text-red-600 font-bold" role="alert" aria-live="assertive">
+          {erro}
+        </p>
+      )}
 
       <button
         type="submit"
-        className="text-[18px] w-[15rem] h-10 border-2 bg-blue-500 text-white border-blue-700 rounded-4xl hover:scale-105 hover:shadow-lg
-  transition-all duration-300 ease-in-out hover:bg-blue-700"
+        disabled={!isFormValid}
+        className={` text-lg w-[70%] max-w-xs h-10 border-2 bg-blue-500 text-white border-blue-700 rounded-4xl transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-lg hover:bg-blue-700` }
       >
         Adicionar bookmark
       </button>
-    
     </form>
   );
 }
