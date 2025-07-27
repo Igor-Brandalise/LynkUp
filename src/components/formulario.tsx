@@ -40,7 +40,6 @@ export function Formulario({ aoAdicionar, favoritos }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col items-center gap-5">
-      <h1 className="text-3xl">Gerenciador de bookmarks</h1>
 
       <input
         type="text"
@@ -59,7 +58,7 @@ export function Formulario({ aoAdicionar, favoritos }: Props) {
       />
 
 {erro && (
-  <p className="text-red-600 font-bold">{erro}</p>
+  <p className="text-red-600 font-bold" role="alert" aria-live="assertive">{erro}</p>
 )}
 
       <button
