@@ -1,19 +1,64 @@
 # 🔖 Gerenciador de Bookmarks
 
-Um aplicativo web simples e eficiente para organizar seus links favoritos em um só lugar. Ideal para quem quer guardar e acessar rapidamente links importantes do dia a dia.
+Aplicação front-end desenvolvida para **organização e gerenciamento de links favoritos**, permitindo cadastrar, visualizar e manter bookmarks de forma simples e eficiente.
 
-## 📌 Funcionalidades
+O projeto surgiu de uma **necessidade pessoal**, com foco em **CRUD**, **organização de dados** e **interface clara**, simulando funcionalidades comuns em aplicações web reais.
 
-- Adicionar novos bookmarks com título e URL
-- Visualizar todos os favoritos em uma interface limpa
-- Interface responsiva e amigável
+---
 
-## 🚀 Tecnologias utilizadas
+## 🎯 Objetivo do Projeto
 
-- React
-- TypeScript
-- Vite
-- Tailwind
+Desenvolver uma aplicação web para demonstrar:
+- operações de CRUD no front-end
+- organização de dados em listas
+- interface simples, funcional e responsiva
+- uso de boas práticas de componentização
 
-## 🔗 deploy
-[LinkUp](https://lynk-up-flax.vercel.app/)
+---
+
+## 🚀 Funcionalidades
+
+- Adição de bookmarks com título e URL  
+- Visualização de links organizados em lista  
+- Interface responsiva e amigável  
+- Atualização dinâmica da lista de favoritos  
+
+---
+
+## 🧩 Lógica e Organização
+
+- Gerenciamento de estado para controle dos bookmarks  
+- Separação entre lógica de dados e componentes de interface  
+- Estrutura preparada para evolução do projeto  
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+- React  
+- TypeScript  
+- Vite  
+- Tailwind CSS  
+
+---
+
+## 📈 Resultados
+
+- Aplicação funcional para organização de links  
+- Interface limpa e objetiva  
+- Código organizado e de fácil manutenção  
+
+---
+
+## 🔮 Melhorias Futuras
+
+- Edição e remoção de bookmarks  
+- Persistência de dados (backend)  
+- Categorias ou tags para organização  
+- Busca por título ou URL  
+
+---
+
+## 🔗 Links
+
+- **Deploy:** LinkUp  
