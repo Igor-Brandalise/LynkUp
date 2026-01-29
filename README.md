@@ -61,4 +61,4 @@ Desenvolver uma aplicação web para demonstrar:
 
 ## 🔗 Links
 
-- **Deploy:** LinkUp  
+- **Deploy:** https://lynk-up-flax.vercel.app/ 
