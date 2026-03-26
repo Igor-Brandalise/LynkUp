@@ -6,15 +6,6 @@ type Props = {
   favoritos: Favorito[];
 };
 
-const isValidUrl = (url: string) => {
-  try {
-    new URL(url);
-    return true;
-  } catch {
-    return false;
-  }
-};
-
 export function Formulario({ aoAdicionar, favoritos }: Props) {
   const [titulo, setTitulo] = useState("");
   const [url, setUrl] = useState("");
@@ -23,73 +14,50 @@ export function Formulario({ aoAdicionar, favoritos }: Props) {
   const handleSubmit = useCallback(
     (e: React.FormEvent) => {
       e.preventDefault();
-
-      if (!titulo || !url) {
-        setErro("Por favor, preencha todos os campos");
-        return;
-      }
-
-      if (!isValidUrl(url)) {
-        setErro("Por favor, insira uma URL válida");
-        return;
-      }
-
-      const urlJaExiste = favoritos.some((f) => f.url === url);
-      if (urlJaExiste) {
-        setErro("Essa URL já foi adicionada");
-        return;
-      }
+      if (!titulo || !url) return setErro("Preencha todos os campos");
+      if (favoritos.some((f) => f.url === url)) return setErro("Link já salvo");
 
       setErro("");
-
-      const novoFavorito: Favorito = {
-        id: crypto.randomUUID(),
-        titulo,
-        url,
-      };
-
-      aoAdicionar(novoFavorito);
-
+      aoAdicionar({ id: crypto.randomUUID(), titulo, url });
       setTitulo("");
       setUrl("");
     },
-    [titulo, url, favoritos, aoAdicionar]
+    [titulo, url, favoritos, aoAdicionar],
   );
 
-  const isFormValid = titulo.trim() !== "" && url.trim() !== "" && isValidUrl(url);
-
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col items-center gap-5">
-      <input
-        type="text"
-        value={titulo}
-        onChange={(e) => setTitulo(e.target.value)}
-        placeholder="Digite seu título"
-        className="w-[90%] h-10 border border-gray-500 rounded-[10px] p-2"
-        aria-label="Título do bookmark"
-      />
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <div className="group/field relative">
+        <input
+          type="text"
+          value={titulo}
+          onChange={(e) => setTitulo(e.target.value)}
+          placeholder="Nome do Bookmark"
+          className="w-full bg-slate-950/40 border border-slate-800 rounded-2xl py-4 px-5 text-white placeholder:text-slate-600 focus:outline-none focus:border-indigo-500/50 focus:ring-4 focus:ring-indigo-500/10 transition-all"
+        />
+      </div>
 
-      <input
-        type="url"
-        value={url}
-        onChange={(e) => setUrl(e.target.value)}
-        placeholder="Digite sua URL"
-        className="w-[90%] h-10 border border-gray-500 rounded-[10px] p-2"
-        aria-label="URL do bookmark"
-      />
+      <div className="group/field relative">
+        <input
+          type="url"
+          value={url}
+          onChange={(e) => setUrl(e.target.value)}
+          placeholder="URL (https://...)"
+          className="w-full bg-slate-950/40 border border-slate-800 rounded-2xl py-4 px-5 text-indigo-400 placeholder:text-slate-600 focus:outline-none focus:border-indigo-500/50 focus:ring-4 focus:ring-indigo-500/10 transition-all text-sm font-mono"
+        />
+      </div>
 
       {erro && (
-        <p className="text-red-600 font-bold" role="alert" aria-live="assertive">
+        <p className="text-red-500 text-[10px] font-bold uppercase tracking-widest ml-2">
           {erro}
         </p>
       )}
 
       <button
         type="submit"
-        disabled={!isFormValid}
-        className={` text-lg w-[70%] max-w-xs h-10 border-2 bg-blue-500 text-white border-blue-700 rounded-4xl transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-lg hover:bg-blue-700` }
+        className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 rounded-2xl shadow-[0_20px_40px_-10px_rgba(79,70,229,0.4)] active:scale-[0.98] transition-all mt-2"
       >
-        Adicionar bookmark
+        Adicionar Bookmark
       </button>
     </form>
   );
